@@ -1,18 +1,14 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
+import os
+import yaml
 import random
 import searches
-import collections
-from cell import Cell
 import logging
 import argparse
-
-
-description = """
-              Maze generation with some different path search algorithms.
-              If no options are specified, it will default to PRIM's with A* search.
-              There are many options that you can configure, read carefully.
-              """
+import collections
+from maze_config_parser import MazeConfig
+from cell import Cell
 
 
 class Maze:
@@ -378,65 +374,29 @@ def set_start_exit(start_cell, exit_cell, maze_rows, maze_cols):
 
 
 def Main():
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("-d", "--dimension",
-                        nargs=2,
-                        type=int,
-                        default=[10, 30],
-                        help="Maze dimension")
-    parser.add_argument("--start-cell",
-                        nargs=2,
-                        type=int,
-                        default=[0, 0],
-                        help="Start cell - must be less than maze dimension")
-    parser.add_argument("--exit-cell",
-                        nargs=2,
-                        type=int,
-                        default=[29, 29],
-                        help="Exit cell - must be less than maze dimension")
-    parser.add_argument("-m", "--maze-type",
-                        choices=['dfs', 'prim'],
-                        default='prim',
-                        help="Maze generation algorithms: depth-first, PRIM's")
-    parser.add_argument("-s", "--search-type",
-                        nargs='*',
-                        choices=['dfs', 'bfs', 'ucs', 'a*', 'gs'],
-                        default=['a*', 'dfs'],
-                        help="Path search algorithms: depth-first, breadth-first, uniform-cost, A*")
-    parser.add_argument("-b", "--break-type",
-                        choices=['dfs', 'bfs'],
-                        default='bfs',
-                        help="Breaking deadends for imperfect maze: depth-first, breadth-first")
-    parser.add_argument("-v", "--verbose",
-                        choices=['warning', 'info', 'debug'],
-                        default='warning',
-                        help="Print debugging - warning, info, debug")
-    args = parser.parse_args()
+    config = MazeConfig()
 
-    # set logging level
-    if args.verbose == 'warning':
-        logging_level = logging.WARNING
-    elif args.verbose == 'info':
-        logging_level = logging.INFO
+    # if config.yaml exists - use it
+    yaml_config_file = os.path.dirname(__file__) + '/config.yaml'
+    if os.path.exists(yaml_config_file):
+        config.process_yaml_file(yaml_config_file)
     else:
-        logging_level = logging.DEBUG
-    logging.basicConfig(format='%(levelname)s: %(message)s',
-                        level=logging_level)
+        config.process_cmd_args()
 
-    rows = args.dimension[0]
-    cols = args.dimension[1]
+    rows = config.maze_dimension[0]
+    cols = config.maze_dimension[1]
 
     # check start and exit coords
-    logging.debug("old start: {0}".format(args.start_cell))
-    logging.debug("old exit: {0}".format(args.exit_cell))
-    start_cell, exit_cell = set_start_exit(args.start_cell, args.exit_cell, rows, cols)
+    logging.debug("old start: {0}".format(config.maze_start_cell))
+    logging.debug("old exit: {0}".format(config.maze_exit_cell))
+    start_cell, exit_cell = set_start_exit(config.maze_start_cell, config.maze_exit_cell, rows, cols)
 
     # generate specified maze
     maze = Maze(rows, cols, start_cell, exit_cell)
-    maze.gen_mod_prim_maze() if args.maze_type == "prim" else maze.gen_dfs_maze()
+    maze.gen_mod_prim_maze() if config.maze_type == "prim" else maze.gen_dfs_maze()
 
     # create an imperfect path by removing deadends - can tune with level
-    maze.remove_deadends_bfs() if args.break_type == "bfs" else maze.remove_deadends_dfs()
+    maze.remove_deadends_bfs() if config.maze_break_type == "bfs" else maze.remove_deadends_dfs()
 
     # create a dictionary for the path searches
     path_searches = {'dfs': searches.dfs,
@@ -445,7 +405,7 @@ def Main():
                      'a*': searches.astar,
                      'gs': searches.gs}
 
-    for s in args.search_type:
+    for s in config.maze_search_type:
         path_searches[s](maze.start_cell,
                          maze.exit_cell,
                          maze.cell_list,
@@ -453,6 +413,7 @@ def Main():
                          maze.cols)
         maze.print_maze()
         maze.reset_visited()
+        print(rows, cols)
 
 
 if __name__ == "__main__":
