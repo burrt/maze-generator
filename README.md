@@ -21,7 +21,7 @@ Future:
 
 ## Running
 
-It should work with Python 2+ although I **highly** recommend Python 3+.
+For sanity purposes, it is only compatible with Python 3+.
 
 ```bash
 python maze -h
