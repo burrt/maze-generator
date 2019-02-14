@@ -81,8 +81,6 @@ class MazeConfig:
 
     # process yaml config file
     def process_yaml_file(self, filepath):
-        print('process file')
-
         # read in config.yaml
         with open(filepath, 'r') as f:
             try:
@@ -90,7 +88,6 @@ class MazeConfig:
             except yaml.YAMLError as exc:
                 print(exc)
 
-        print(yaml_file)
         if yaml_file:
             yaml_file = yaml_file[0]
             if 'dimension' in yaml_file:
@@ -107,5 +104,3 @@ class MazeConfig:
                 self.maze_break_type = yaml_file['break_type']
             if 'logging' in yaml_file:
                 self.maze_logging = yaml_file['logging']
-
-            print('finished reading yaml')
