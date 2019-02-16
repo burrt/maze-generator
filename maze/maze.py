@@ -383,12 +383,15 @@ def Main():
     else:
         config.process_cmd_args()
 
+    logging.basicConfig(format='%(levelname)s: %(message)s',
+                        level=config.maze_logging)
+
     rows = config.maze_dimension[0]
     cols = config.maze_dimension[1]
 
     # check start and exit coords
-    logging.debug("old start: {0}".format(config.maze_start_cell))
-    logging.debug("old exit: {0}".format(config.maze_exit_cell))
+    logging.info("old start: {0}".format(config.maze_start_cell))
+    logging.info("old exit: {0}".format(config.maze_exit_cell))
     start_cell, exit_cell = set_start_exit(config.maze_start_cell, config.maze_exit_cell, rows, cols)
 
     # generate specified maze
