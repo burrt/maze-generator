@@ -21,14 +21,16 @@ Future:
 
 ## Running
 
-For sanity purposes, it is only compatible with Python 3+.
+For sanity purposes, it is **only** compatible with Python 3+.
 
 ```bash
 python maze -h
 python maze
 ```
 
-### Example YAXML file
+### Example Configuration YAML file
+
+If the configuration file exists - any command line arguments will be ignored
 
 ```yaml
 // config.yaml
