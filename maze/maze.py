@@ -345,34 +345,6 @@ class Maze:
                 unvisited_stack += [n for n in curr.path_neighbours() if n not in visited_stack]
 
 
-def set_start_exit(start_cell, exit_cell, maze_rows, maze_cols):
-    """Start and exit cells are lists - move coordinates to west or east side of maze"""
-    for cell in [start_cell, exit_cell]:
-        # check row
-        if cell[0] > maze_rows:
-            cell[0] -= (cell[0] - maze_rows) + 1
-        elif cell[0] == maze_rows:
-            cell[0] -= 1
-        # check col
-        if cell[1] > maze_cols:
-            cell[1] -= (cell[1] - maze_cols) + 1
-        elif cell[1] == maze_cols:
-            cell[1] -= 1
-        if cell[0] != maze_rows-1 or cell[1] != maze_cols-1:
-            if cell[1] != maze_cols-1 and cell[1] > maze_cols//2:
-                cell[1] = maze_cols-1
-            elif cell[1] != maze_cols-1 and cell[1] < maze_cols//2:
-                cell[1] = 0
-            # adjust row as last resort
-            elif cell[0] != maze_rows-1 and cell[0] > maze_rows//2:
-                cell[0] = maze_rows-1
-            elif cell[0] != maze_rows-1 and cell[0] < maze_rows//2:
-                cell[0] = 0
-    logging.debug("new start: {0}".format(start_cell))
-    logging.debug("new exit: {0}".format(exit_cell))
-    return start_cell, exit_cell
-
-
 def Main():
     config = MazeConfig()
 
@@ -390,9 +362,15 @@ def Main():
     cols = config.maze_dimension[1]
 
     # check start and exit coords
-    logging.info("old start: {0}".format(config.maze_start_cell))
-    logging.info("old exit: {0}".format(config.maze_exit_cell))
-    start_cell, exit_cell = set_start_exit(config.maze_start_cell, config.maze_exit_cell, rows, cols)
+    logging.info("User start: {0}".format(config.maze_start_cell))
+    logging.info("User exit: {0}".format(config.maze_exit_cell))
+
+    # adjust the start and exit codes they don't lie on the maze boundary
+    start_cell = config.adjust_cell(config.maze_start_cell, True)
+    exit_cell = config.adjust_cell(config.maze_exit_cell, False)
+    if start_cell == exit_cell:
+        start_cell, exit_cell = config.reset_to_defaults(start_cell, exit_cell)
+
 
     # generate specified maze
     maze = Maze(rows, cols, start_cell, exit_cell)
@@ -416,7 +394,6 @@ def Main():
                          maze.cols)
         maze.print_maze()
         maze.reset_visited()
-        print(rows, cols)
 
 
 if __name__ == "__main__":
