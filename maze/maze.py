@@ -380,11 +380,13 @@ def Main():
     maze.remove_deadends_bfs() if config.maze_break_type == "bfs" else maze.remove_deadends_dfs()
 
     # create a dictionary for the path searches
-    path_searches = {'dfs': searches.dfs,
-                     'bfs': searches.bfs,
-                     'ucs': searches.ucs,
-                     'a*': searches.astar,
-                     'gs': searches.gs}
+    path_searches = {
+        'dfs': searches.dfs,
+        'bfs': searches.bfs,
+        'ucs': searches.ucs,
+        'a*': searches.astar,
+        'gs': searches.gs
+    }
 
     for s in config.maze_search_type:
         path_searches[s](maze.start_cell,

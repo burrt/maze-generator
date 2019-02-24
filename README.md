@@ -24,13 +24,16 @@ Future:
 For sanity purposes, it is **only** compatible with Python 3+.
 
 ```bash
+# activate your venv
+pipenv install
+
 python maze -h
 python maze
 ```
 
 ### Example Configuration YAML file
 
-If the configuration file exists - any command line arguments will be ignored
+If the configuration file exists - any command line arguments will be ignored.
 
 ```yaml
 // config.yaml
