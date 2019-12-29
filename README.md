@@ -36,9 +36,9 @@ python maze
 If the configuration file exists - any command line arguments will be ignored.
 
 ```yaml
-// config.yaml
+# config.yaml
 
-// rows, cols
+# rows, cols
 - dimension:
     - 10
     - 30
