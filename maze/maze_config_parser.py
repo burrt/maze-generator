@@ -53,8 +53,8 @@ class MazeConfig:
                             default=self.maze_exit_cell,
                             help="Exit cell - must be less than maze dimension")
         parser.add_argument("-m", "--maze-type",
-                            choices=self.maze_exit_cell,
-                            default='prim',
+                            choices=['prim', 'dfs'],
+                            default=self.maze_type,
                             help="Maze generation algorithms: depth-first, PRIM's")
         parser.add_argument("-s", "--search-type",
                             nargs='*',
