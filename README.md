@@ -1,6 +1,6 @@
 # Maze
 
-Currently implmented the following maze generation alorithms:
+Currently implemented the following maze generation algorithms:
 
 * Depth-first backtracking
 * Modified PRIM's
@@ -16,7 +16,7 @@ Currently implemented the following path search algorithms:
 Future:
 
 * 4+ direction movement
-* Additional heuritics
+* Additional heuristics
 * Circular mazes
 
 ## Running

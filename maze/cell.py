@@ -2,7 +2,7 @@ import math
 
 
 class Cell:
-    """A cell that is part of a maze keep track of verious state information.
+    """A cell that is part of a maze keep track of various state information.
 
     It consists of the following:
         * 4 walls
