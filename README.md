@@ -24,11 +24,21 @@ Future:
 For sanity purposes, it is **only** compatible with Python 3+.
 
 ```bash
-# activate your venv
-pipenv install
+$> git clone https://github.com/burrt/maze-generator.git
 
-python maze -h
-python maze
+# activate your venv
+$> python -m pip install virtualenv
+
+$> cd maze-generator
+$> virtualenv venv
+$> source venv/bin/activate
+$> python -m pip install pipenv
+
+# install packages
+$> pipenv install
+
+$> python maze -h
+$> python maze
 ```
 
 ### Example Configuration YAML file
