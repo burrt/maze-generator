@@ -49,7 +49,7 @@ def bfs(start_cell, exit_cell, cell_list, rows, cols):
             if neighbour not in visited_fifo:
                 neighbour.parent = curr
                 unvisited_fifo.append(neighbour)
-                # this looks weird but is an actual optimisation
+                # this looks weird but is an actual optimization
                 # we mark them as 'visited' or 'seen' so we don't
                 # expand many duplicate cells!
                 # previously this would add all its other neighbours!
@@ -92,7 +92,7 @@ def dfs(start_cell, exit_cell, cell_list, rows, cols):
 
 
 def ucs(start_cell, exit_cell, cell_list, rows, cols):
-    """Uniform cost search - Diikjtra's algorithm
+    """Uniform cost search - Dijkstra's algorithm
 
     Actually, because of the 4-movement maze,
     UCS will perform like BFS due to path cost == 1
