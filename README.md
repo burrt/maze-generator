@@ -18,27 +18,28 @@ Future:
 * 4+ direction movement
 * Additional heuristics
 * Circular mazes
+* Extensibility is almost impossible without design patterns
 
 ## Running
 
 For sanity purposes, it is **only** compatible with Python 3+.
 
 ```bash
-$> git clone https://github.com/burrt/maze-generator.git
+$ git clone https://github.com/burrt/maze-generator.git
 
 # activate your venv
-$> python -m pip install virtualenv
+$ python -m pip install virtualenv
 
-$> cd maze-generator
-$> virtualenv venv
-$> source venv/bin/activate
-$> python -m pip install pipenv
+$ cd maze-generator
+$ virtualenv venv
+$ source venv/bin/activate
+$ python -m pip install pipenv
 
 # install packages
-$> pipenv install
+$ pipenv install
 
-$> python maze -h
-$> python maze
+$ python maze -h
+$ python maze
 ```
 
 ### Example Configuration YAML file
