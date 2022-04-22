@@ -18,19 +18,35 @@ class MazeConfig:
         self.maze_type = 'prim'
         self.maze_search_type = ['a*', 'dfs']
         self.maze_break_type = 'bfs'
-        self.maze_logging = 'warning'
+        self.maze_logging = 'info'
+
+
+    def logging_level_to_enum(self, user_setting):
+        """Convert the logging level from string to int"""
+
+        if user_setting == 'warning':
+            return logging.WARNING
+        elif user_setting == 'info':
+            return logging.INFO
+        else:
+            return logging.DEBUG
+
+
+    def logging_level_to_str(self, user_setting):
+        """Convert the logging level from int to string"""
+
+        if user_setting == logging.WARNING:
+            return 'warning'
+        elif user_setting == logging.INFO:
+            return 'info'
+        else:
+            return 'debug'
 
 
     def set_logging_level(self, user_setting):
         """Set the logging level to be used by maze"""
 
-        if user_setting == 'warning':
-            self.maze_logging = logging.WARNING
-            print('warning')
-        elif user_setting == 'info':
-            self.maze_logging = logging.INFO
-        else:
-            self.maze_logging = logging.DEBUG
+        self.maze_logging = self.logging_level_to_enum(user_setting)
 
 
     def process_cmd_args(self):
@@ -46,12 +62,12 @@ class MazeConfig:
                             nargs=2,
                             type=int,
                             default=self.maze_start_cell,
-                            help="Start cell - must be less than maze dimension")
+                            help="Start cell - must be less than maze dimension, the format is [ROW COL]")
         parser.add_argument("--exit-cell",
                             nargs=2,
                             type=int,
                             default=self.maze_exit_cell,
-                            help="Exit cell - must be less than maze dimension")
+                            help="Exit cell - must be less than maze dimension, the format is [ROW COL]")
         parser.add_argument("-m", "--maze-type",
                             choices=['prim', 'dfs'],
                             default=self.maze_type,
@@ -62,21 +78,22 @@ class MazeConfig:
                             default=self.maze_search_type,
                             help="Path search algorithms: depth-first, breadth-first, uniform-cost, A*")
         parser.add_argument("-b", "--break-type",
-                            choices=self.maze_break_type,
-                            default='bfs',
-                            help="Breaking deadends for imperfect maze: depth-first, breadth-first")
-        parser.add_argument("-v", "--verbose",
+                            choices=['bfs', 'dfs'],
+                            default=self.maze_break_type,
+                            help="Breaking deadends for imperfect maze: breadth-first, depth-first")
+        parser.add_argument("-l", "--log-level",
                             choices=['warning', 'info', 'debug'],
-                            default=self.maze_logging,
-                            help="Print debugging - warning, info, debug")
+                            default=self.logging_level_to_str(self.maze_logging),
+                            help="Logging level - warning, info, debug")
         args = parser.parse_args()
 
         # set logging level
-        self.set_logging_level(args.verbose)
+        self.set_logging_level(args.log_level)
 
-        # check start and exit coords
-        logging.debug("old start: {0}".format(args.start_cell))
-        logging.debug("old exit: {0}".format(args.exit_cell))
+        if self.maze_logging == logging.DEBUG:
+            # check start and exit coords
+            print("old start: {0}".format(args.start_cell))
+            print("old exit: {0}".format(args.exit_cell))
 
         # set all cmd args
         self.maze_dimension = args.dimension
@@ -89,12 +106,12 @@ class MazeConfig:
 
     def process_yaml_file(self, filepath):
         """Process the YAML configuration file if it exists"""
-
         with open(filepath, 'r') as f:
             try:
                 yaml_file = yaml.safe_load(f)
             except yaml.YAMLError as exc:
-                logging.exception(exc)
+                print("ERROR: failed to read the yaml file, exception: {0}".format(exc))
+                print("Falling back on default settings for configuration")
 
         if yaml_file:
             yaml_file = {k: v for d in yaml_file for k, v in d.items()}
@@ -110,15 +127,15 @@ class MazeConfig:
                 self.maze_search_type = yaml_file['search_type']
             if 'break_type' in yaml_file:
                 self.maze_break_type = yaml_file['break_type'][0]
-            if 'logging' in yaml_file:
-                self.maze_logging = yaml_file['logging'][0]
+            if 'log_level' in yaml_file:
+                self.maze_logging = yaml_file['log_level'][0]
 
         # set logging level
         self.set_logging_level(self.maze_logging)
 
 
     def reset_to_defaults(self, start_cell, exit_cell):
-        logging.warn("Start and exit coordinates are equal - resetting to default coordinates")
+        print("Start and exit coordinates are equal - resetting to default coordinates")
         return [0, 0], [self.maze_dimension[0]-1, self.maze_dimension[1]-1]
 
 
@@ -174,5 +191,5 @@ class MazeConfig:
             else:
                 adjusted_cell[1] = 0
 
-        logging.info("Adjusted cell: {0}".format(adjusted_cell))
+        print("Adjusted start/exit cell: {0}".format(adjusted_cell))
         return adjusted_cell

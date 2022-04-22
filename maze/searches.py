@@ -41,7 +41,7 @@ def bfs(start_cell, exit_cell, cell_list, rows, cols):
         expanded += 1
 
         if curr == exit_cell:
-            logging.info("BFS path search: Exit found")
+            logging.debug("BFS path search: Exit found")
             break
         visited_fifo.add(curr)
 
@@ -57,7 +57,7 @@ def bfs(start_cell, exit_cell, cell_list, rows, cols):
 
     path_length = gen_path(curr)
     print("BFS path search: Expanded {0} cells".format(expanded))
-    print("BFS path search: Path length {0}".format(path_length))
+    print("BFS path search: Path length = {0}".format(path_length))
 
 
 def dfs(start_cell, exit_cell, cell_list, rows, cols):
@@ -74,7 +74,7 @@ def dfs(start_cell, exit_cell, cell_list, rows, cols):
         curr = unvisited_stack.pop()
         expanded += 1
         if curr == exit_cell:
-            logging.info("DFS path search: Exit found")
+            logging.debug("DFS path search: Exit found")
             break
 
         if curr not in visited_stack:
@@ -88,7 +88,7 @@ def dfs(start_cell, exit_cell, cell_list, rows, cols):
     # create a path for printing
     path_length = gen_path(curr)
     print("DFS path search: Expanded {0} cells".format(expanded))
-    print("DFS path search: Path length {0}".format(path_length))
+    print("DFS path search: Path length = {0}".format(path_length))
 
 
 def ucs(start_cell, exit_cell, cell_list, rows, cols):
@@ -113,7 +113,7 @@ def ucs(start_cell, exit_cell, cell_list, rows, cols):
         # due to the priority queue and checking only after
         # all neighbours have been pushed!
         if curr == exit_cell:
-            logging.info("UCS path search: Exit found")
+            logging.debug("UCS path search: Exit found")
             break
 
         # get neighbours and calculate costs
@@ -132,7 +132,7 @@ def ucs(start_cell, exit_cell, cell_list, rows, cols):
     # create a path for printing
     path_length = gen_path(curr)
     print("UCS path search: Expanded {0} cells".format(expanded))
-    print("UCS path search: Path length {0}".format(path_length))
+    print("UCS path search: Path length = {0}".format(path_length))
 
 
 def gs(start_cell, exit_cell, cell_list, rows, cols):
@@ -157,7 +157,7 @@ def gs(start_cell, exit_cell, cell_list, rows, cols):
         # due to the priority queue and checking only after
         # all neighbours have been pushed!
         if curr == exit_cell:
-            logging.info("Greedy path search: Exit found")
+            logging.debug("Greedy path search: Exit found")
             break
 
         # get neighbours and calculate costs
@@ -173,7 +173,7 @@ def gs(start_cell, exit_cell, cell_list, rows, cols):
     # create a path for printing
     path_length = gen_path(curr)
     print("Greedy path search: Expanded {0} cells".format(expanded))
-    print("Greedy path search: Path length {0}".format(path_length))
+    print("Greedy path search: Path length = {0}".format(path_length))
 
 
 def astar(start_cell, exit_cell, cell_list, rows, cols, tiebreak=False):
@@ -202,7 +202,7 @@ def astar(start_cell, exit_cell, cell_list, rows, cols, tiebreak=False):
         # due to the priority queue and checking only after
         # all neighbours have been pushed!
         if curr == exit_cell:
-            logging.info("A* path search: Exit found")
+            logging.debug("A* path search: Exit found")
             break
 
         # f(n) = g(n) + h(n) == f_cost
@@ -227,7 +227,7 @@ def astar(start_cell, exit_cell, cell_list, rows, cols, tiebreak=False):
     # create a path for printing
     path_length = gen_path(curr)
     print("A* path search: Expanded {0} cells".format(expanded))
-    print("A* path search: Path length {0}".format(path_length))
+    print("A* path search: Path length = {0}".format(path_length))
 
 
 def binary_search(l, item):

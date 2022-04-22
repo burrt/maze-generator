@@ -31,7 +31,7 @@ $ git clone https://github.com/burrt/maze-generator.git
 $ python -m pip install virtualenv
 
 $ cd maze-generator
-$ virtualenv venv
+$ python -m virtualenv venv
 $ source venv/bin/activate
 $ python -m pip install pipenv
 
@@ -44,15 +44,14 @@ $ python maze
 
 ### Example Configuration YAML file
 
-If the configuration file exists - any command line arguments will be ignored.
+Command line arguments will override the config file.
 
 ```yaml
 # config.yaml
 
-# rows, cols
 - dimension:
-    - 10
-    - 30
+    - 10 # rows
+    - 30 # cols
 - start_cell:
     - 0
     - 0

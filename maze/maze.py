@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import yaml
 import random
 import searches
@@ -349,11 +350,12 @@ def Main():
     config = MazeConfig()
 
     # if config.yaml exists - use it
-    yaml_config_file = os.path.dirname(__file__) + '/config.yaml'
+    yaml_config_file =os.path.abspath(os.curdir) + '/config.yaml'
     if os.path.exists(yaml_config_file):
         config.process_yaml_file(yaml_config_file)
-    else:
-        config.process_cmd_args()
+
+    # override config file if there are command line arguments supplier
+    config.process_cmd_args()
 
     logging.basicConfig(format='%(levelname)s: %(message)s',
                         level=config.maze_logging)
