@@ -346,7 +346,7 @@ class Maze:
                 unvisited_stack += [n for n in curr.path_neighbours() if n not in visited_stack]
 
 
-def Main():
+def main():
     config = MazeConfig()
 
     # if config.yaml exists - use it
@@ -401,4 +401,4 @@ def Main():
 
 
 if __name__ == "__main__":
-    Main()
+    main()
