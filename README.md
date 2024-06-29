@@ -28,15 +28,13 @@ For sanity purposes, it is **only** compatible with Python 3+.
 $ git clone https://github.com/burrt/maze-generator.git
 
 # activate your venv
-$ python -m pip install virtualenv
-
 $ cd maze-generator
-$ python -m virtualenv venv
+$ python -m venv venv
 $ source venv/bin/activate
-$ python -m pip install pipenv
 
-# install packages
-$ pipenv install
+$ pip install pip-tools
+$ pip-compile requirements.in
+$ pip install -r requirements.txt
 
 $ python maze -h
 $ python maze
