@@ -28,8 +28,10 @@ class MazeConfig:
             return logging.WARNING
         elif user_setting == 'info':
             return logging.INFO
-        else:
+        elif user_setting == 'debug':
             return logging.DEBUG
+        else:
+            return logging.INFO
 
 
     def logging_level_to_str(self, user_setting):
@@ -39,8 +41,10 @@ class MazeConfig:
             return 'warning'
         elif user_setting == logging.INFO:
             return 'info'
+        elif user_setting == 'debug':
+            return logging.DEBUG
         else:
-            return 'debug'
+            return logging.INFO
 
 
     def set_logging_level(self, user_setting):
